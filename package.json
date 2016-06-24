@@ -1,0 +1,33 @@
+{
+  "name": "plataforma-carga-api",
+  "version": "1.0.0",
+  "description": "Api de la plataforma de carga",
+  "main": "index.js",
+  "scripts": {
+    "start": "NODE_ENV=development node index.js",
+    "test": "test"
+  },
+  "engines": {
+    "node": "4.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mendozajuan/plataforma-carga-api.git"
+  },
+  "keywords": [
+    "api"
+  ],
+  "author": "Juan Mendoza",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mendozajuan/plataforma-carga-api/issues"
+  },
+  "homepage": "https://github.com/mendozajuan/plataforma-carga-api#readme",
+  "dependencies": {
+    "cron": "^1.1.0",
+    "hapi": "^12.0.0",
+    "inert": "^3.2.0",
+    "wreck": "^8.0.0",
+    "xhr": "^2.2.0"
+  }
+}

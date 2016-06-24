@@ -1,0 +1,12 @@
+/node_modules/
+/nexus/releases/
+temp
+*.log
+.idea
+server/config/environment/index.js
+server/config/express.js
+/static/dist/
+node_modules.tar.gz
+*.tar.gz
+nexus/releases/
+nexus/server.tar.gz
