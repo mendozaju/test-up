@@ -19,7 +19,7 @@ var SALDO = true;
 
 new CronJob('*/15 * * * * *', function () {
  
-        Wreck.get("test-money.herokuapp.com/api", function (err, resp, body) {
+        Wreck.get("https://test-money.herokuapp.com/api", function (err, resp, body) {
 
             if (err) {
                 console.log('ERROR!!!...' + err);
