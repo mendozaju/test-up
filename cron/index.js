@@ -26,7 +26,7 @@ new CronJob('*/15 * * * * *', function () {
         
         //https://test-money.herokuapp.com
         //http://localhost:3000/api
-        Wreck.get("https://test-money.herokuapp.com", function (err, resp, body) {
+        Wreck.get("https://test-money.herokuapp.com/api", function (err, resp, body) {
 
             if (err) {
                 console.log('ERROR!!!...' + err);
