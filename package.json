@@ -1,7 +1,7 @@
 {
-  "name": "plataforma-carga-api",
+  "name": "test-up",
   "version": "1.0.0",
-  "description": "Api de la plataforma de carga",
+  "description": "test de money",
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=development node index.js",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mendozajuan/plataforma-carga-api.git"
+    "url": "git+https://github.com/mendozaju/test-up.git"
   },
   "keywords": [
     "api"
@@ -20,9 +20,9 @@
   "author": "Juan Mendoza",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mendozajuan/plataforma-carga-api/issues"
+    "url": "https://github.com/mendozaju/test-up/issues"
   },
-  "homepage": "https://github.com/mendozajuan/plataforma-carga-api#readme",
+  "homepage": "https://github.com/mendozaju/test-up#readme",
   "dependencies": {
     "cron": "^1.1.0",
     "hapi": "^12.0.0",
