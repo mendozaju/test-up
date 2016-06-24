@@ -24,6 +24,7 @@ new CronJob('*/15 * * * * *', function () {
             if (err) {
                 console.log('ERROR!!!...' + err);
             }
+            
             var valorString = JSON.stringify(JSON.parse(body).ask).replace(/"|'/g, '');
             var valorActual = parseFloat(valorString);
             //console.log('Valor string: ' + valorString);

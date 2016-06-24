@@ -3,7 +3,7 @@
 const execServer = require('child_process').exec;
 const execCrone = require('child_process').exec;
 
-const nightWatchCommand = 'node server/index.js';
+const nightWatchCommand = 'node cron/index.js';
 const cronCommand = 'node cron/index.js';
 
 /*

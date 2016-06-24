@@ -4,7 +4,7 @@
   "description": "test de money",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=development node index.js",
+    "start": "NODE_ENV=development node cron/index.js",
     "test": "test"
   },
   "engines": {
