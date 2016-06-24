@@ -2,6 +2,8 @@
 
 var CronJob = require('cron').CronJob;
 var Wreck = require('wreck');
+var iterationCheck = require('./iteration_checker');
+var serverClient = require('./server_client');
 
 const execServer = require('child_process').exec;
 const startServerCommand = 'node server/index.js';
@@ -13,13 +15,18 @@ execServer(startServerCommand, function (error, stdout, stderr) {
 });
 
 var VALOR_GANADO = 0;
-var VALOR_COMPRA = 638;
+var VALOR_COMPRA = 647;
 var VALOR_VENTA = 0;
 var SALDO = true;
+var ITERACIONES_MAXIMAS = 120;
+var ITERACIONES_ACTUALES = ITERACIONES_MAXIMAS;
+var TRANSACCION_REALIZADA = false;
 
 new CronJob('*/15 * * * * *', function () {
- 
-        Wreck.get("https://test-money.herokuapp.com/api", function (err, resp, body) {
+        
+        //https://test-money.herokuapp.com
+        //http://localhost:3000/api
+        Wreck.get("https://test-money.herokuapp.com", function (err, resp, body) {
 
             if (err) {
                 console.log('ERROR!!!...' + err);
@@ -27,9 +34,7 @@ new CronJob('*/15 * * * * *', function () {
             
             var valorString = JSON.stringify(JSON.parse(body).ask).replace(/"|'/g, '');
             var valorActual = parseFloat(valorString);
-            //console.log('Valor string: ' + valorString);
-            //console.log('Valor Actual:' + valorActual);
-            
+        
             
             if(SALDO){
                 console.log(`Valor de compra:[${VALOR_COMPRA}]`);
@@ -38,31 +43,49 @@ new CronJob('*/15 * * * * *', function () {
             }
             console.log(`Valor actual:[${valorActual}]`);
             
-            
-            //Si tengo que vender
-            //console.log(`Valor de compra:[${VALOR_COMPRA}]`);
-            if ( VALOR_COMPRA + 1 <  valorActual && SALDO){
+            if ( VALOR_COMPRA + 1 <  valorActual && SALDO || iterationCheck.haveToSale(ITERACIONES_ACTUALES, SALDO)){
                 console.log('vendo...');
+                if( iterationCheck.haveToSale(ITERACIONES_ACTUALES, SALDO)){
+                    ITERACIONES_ACTUALES = ITERACIONES_MAXIMAS;
+                    console.log(`Forzado por numero de interaccion... se resetea a:[${ITERACIONES_ACTUALES}]`);
+                }
                 
                 console.log(`Valor de compra:[${VALOR_COMPRA}] - Valor actual:[${valorActual}]`);
-                VALOR_GANADO = VALOR_GANADO + (valorActual - VALOR_COMPRA);                
+                VALOR_GANADO = VALOR_GANADO + (valorActual - VALOR_COMPRA);
+                serverClient.setNuevaGanancia(VALOR_GANADO);      
                 console.log(`-> Ganancia:[${VALOR_GANADO}]`);
                 VALOR_VENTA = valorActual;
                 
                 console.log(`* Nuevo valor de venta:[${VALOR_VENTA}]`); 
-                SALDO = false;               
+                SALDO = false;  
+                TRANSACCION_REALIZADA = true;
+                     
+            }else{
+                TRANSACCION_REALIZADA= false;
             }
             
-            //Si tengo que comprar
-            //console.log(`Valor de venta:[${VALOR_VENTA}]`);
-            if( VALOR_VENTA - 1 > valorActual && !SALDO){
+            if( VALOR_VENTA - 1 > valorActual && !SALDO || iterationCheck.haveToBuild(ITERACIONES_ACTUALES, SALDO)){
                 console.log('compro...');
+                if( iterationCheck.haveToBuild(ITERACIONES_ACTUALES, SALDO)){
+                    ITERACIONES_ACTUALES = ITERACIONES_MAXIMAS;
+                    console.log(`Forzado por numero de interaccion... se resetea a:[${ITERACIONES_ACTUALES}]`);
+                }
+                
+                
                 console.log(`Vendi a:[${VALOR_VENTA}] - Compro ahora a:[${valorActual}]`);
                 
                 VALOR_COMPRA = valorActual;
                 console.log(`Nuevo valor de compra:[${valorActual}]`); 
-                SALDO = true;              
-            }            
+                SALDO = true;    
+                        
+            } else{
+                TRANSACCION_REALIZADA= false;
+            }          
+                
+            //Decremento el numero de transacciones
+            if(!TRANSACCION_REALIZADA){
+                ITERACIONES_ACTUALES = ITERACIONES_ACTUALES -1;
+            }
             
         })
 
