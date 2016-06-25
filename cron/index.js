@@ -18,9 +18,22 @@ var VALOR_GANADO = 0;
 var VALOR_COMPRA = 647;
 var VALOR_VENTA = 0;
 var SALDO = true;
-var ITERACIONES_MAXIMAS = 40;
+var ITERACIONES_MAXIMAS = 480;
 var ITERACIONES_ACTUALES = ITERACIONES_MAXIMAS;
 var TRANSACCION_REALIZADA = false;
+
+
+ Wreck.get("https://test-money.herokuapp.com/api", function (err, resp, body) {
+
+            if (err) {
+                console.log('ERROR!!!...' + err);
+            }
+            
+            var valorString = JSON.stringify(JSON.parse(body).ask).replace(/"|'/g, '');
+            var valorActual = parseFloat(valorString);
+            VALOR_COMPRA = valorActual; 
+ });
+
 
 new CronJob('*/15 * * * * *', function () {
         
